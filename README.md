@@ -106,7 +106,7 @@ Cette application web permet à une entreprise de lavage automobile de gérer se
 
 2. **Accéder à l'application**
    - Ouvrir un navigateur web
-   - Accéder à l'URL: `http://localhost:8000`
+   - Accéder à l'URL: `http://localhost:8000/connexion`
 
 3. **Se connecter à l'application**
    - Utiliser les identifiants du superutilisateur créé précédemment
