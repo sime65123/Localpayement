@@ -1,0 +1,59 @@
+{% load static %}
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>"LocalPayement"</title>
+
+    <link rel="stylesheet" href="{% static 'assets/css/plugins/toastr/toastr.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/font-awesome/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+   
+    {% block lien %}
+    {% endblock %}
+
+</head>
+
+<body style="overflow-y: none;" >
+    {% block content %}
+    {% endblock %}
+
+<div class="footer" style="position: fixed;">
+    <div class="pull-right">
+        <strong>Tél </strong> +237 673 398 046
+    </div>
+    <div>
+        <strong>Développé par</strong> EdMaster
+    </div>
+</div>
+
+{% block script %}{% endblock %}
+<!-- Mainly scripts -->
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+
+<script src=" {% static 'assets/js/jquery-3.1.1.min.js' %}"></script>
+<script src=" {% static 'assets/js/bootstrap.min.js' %}"></script>
+
+<script src=" {% static 'assets/js/plugins/toastr/toastr.min.js' %}"></script>
+<script src=" {% static 'assets/js/plugins/metisMenu/jquery.metisMenu.js' %}"></script>
+<script src=" {% static 'assets/js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+<script src=" {% static 'assets/js/plugins/toastr/toastr.min.js' %}"></script>
+<script src=" {% static 'assets/js/plugins/metisMenu/jquery.metisMenu.js' %}"></script>
+<script src=" {% static 'assets/js/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>>
+<script src=" {% static 'assets/js/plugins/pace/pace.min.js' %}"></script>
+<script src=" {% static 'assets/js/inspinia.js' %}"></script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+
+</body>
+</html>

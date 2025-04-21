@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'style_connexion.css' %}" />
+
+{% endblock %}
+{% block title %}
+Connexion
+{% endblock %}
+
+{% block content %}
+<main>
+  <header>
+    <h4>Connexion</h4>
+  </header>
+  <form>
+    <div class="form_wrapper">
+      <input id="input" type="text" required>
+      <label for="input">email</label>
+      <i class="material-icons">person</i>
+    </div>
+    <div class="form_wrapper">
+      <input id="password" type="password" required>
+      <label for="password">Password</label>
+      <i class="material-icons">lock</i>
+    </div>
+   
+    <button>Se Connecter</button>
+   
+  </form>
+</main>
+{% endblock %}
+

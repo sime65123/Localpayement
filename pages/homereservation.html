@@ -1,0 +1,313 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script>
+    $(document).ready(function () {
+        $('#add-client-btn').click(function () {
+            $('#add-client-form').show();
+        });
+        $('#make-reservation-btn').click(function () {
+            $('#make-reservation-form').show();
+        });
+    });
+</script>
+<div id="wrapper">
+
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="img-circle" src="{% static 'assets/img/logo2.PNG' %}"
+                                width="50px" height="50px" /></span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="{% url 'deconnexion' %}">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">{{ user.username }}</strong>
+                                </span>
+                                <span class="font-bold">Gestionnaire des Réservations</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">
+                        EHM
+                    </div>
+                </li>
+                <li class="">
+                    <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Acceuil</span></a>
+                </li>
+                <li class="active">
+                    <a href="#"><i class="fa fa-bed"></i> <span class="nav-label">D_Reservation</span></a>
+                </li>
+                <li>
+                    <a href="{% url 'deconnexion' %}"><span class="nav-label"><i class="fa fa-sign-out"></i> Déconnexion</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                            class="fa fa-bars"></i> </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">Bienvenue, {{ user.username }}</span>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-sign-out"></i> Déconnexion
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-12">
+                <h2>DASHBOARD GESTION DES RESERVATIONS</h2>
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <!-- Gestion des Clients -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Gestion des Clients</h2>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary btn-block" id="add-client-btn">
+                                        <i class="fa fa-plus"></i> Ajouter un Client
+                                    </button>
+                                    <div id="add-client-form" style="display: none;">
+                                        <!-- Formulaire d'ajout de client -->
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Nom du Client</label>
+                                                <input type="text" class="form-control" placeholder="Nom du Client">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Prénom du Client</label>
+                                                <input type="text" class="form-control" placeholder="Prénom du Client">
+                                            </div>
+                                            <!-- ... Autres champs du formulaire (email, téléphone, etc.) ... -->
+                                            <button type="submit" class="btn btn-success">Enregistrer</button>
+                                            <button type="button" class="btn btn-danger"
+                                                onclick="$('#add-client-form').hide();">Annuler</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Rechercher un Client</label>
+                                            <input type="text" class="form-control" placeholder="Nom du Client">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Rechercher</button>
+                                    </form>
+                                    <!-- ... Affichage des résultats de la recherche ... -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <!-- Gestion des Réservations -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Gestion des Réservations</h2>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <button class="btn btn-primary btn-block" id="make-reservation-btn">
+                                        <i class="fa fa-calendar-plus-o"></i> Effectuer une Réservation
+                                    </button>
+                                    <div id="make-reservation-form" style="display: none;">
+                                        <!-- Formulaire de réservation -->
+                                        <form role="form">
+                                            <div class="form-group">
+                                                <label>Client</label>
+                                                <select class="form-control">
+                                                    <option value="">Sélectionner un client</option>
+                                                    <!-- ... Liste des clients ... -->
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date d'arrivée</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Date de départ</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Type de Chambre</label>
+                                                <select class="form-control">
+                                                    <option value="">Sélectionner un type de chambre</option>
+                                                    <!-- ... Liste des types de chambre ... -->
+                                                </select>
+                                            </div>
+                                            <!-- ... Autres champs du formulaire (nombre de personnes, etc.) ... -->
+                                            <button type="submit" class="btn btn-success">Réserver</button>
+                                            <button type="button" class="btn btn-danger"
+                                                onclick="$('#make-reservation-form').hide();">Annuler</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Numéro de Réservation</label>
+                                            <input type="text" class="form-control" placeholder="Numéro de Réservation">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Tirer</button>
+                                    </form>
+                                    <!-- ... Affichage des détails de la réservation ... -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion des Chambres -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Gestion des Chambres</h2>
+                        </div>
+                        <div class="ibox-content">
+                            <!-- ... Affichage du statut des chambres (occupées/libres) ... -->
+                            <!-- ... Possibilité d'attribuer/libérer des chambres ... -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recherches -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h2>Recherches</h2>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Rechercher une Chambre</label>
+                                            <select class="form-control">
+                                                <option value="">Sélectionner un type de chambre</option>
+                                                <!-- ... Liste des types de chambre ... -->
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date d'arrivée</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date de départ</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Rechercher</button>
+                                    </form>
+                                    <!-- ... Affichage des résultats de la recherche ... -->
+                                </div>
+                                <div class="col-lg-6">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Rechercher une Chambre</label>
+                                            <select class="form-control">
+                                                <option value="">Sélectionner un type de chambre</option>
+                                                <!-- ... Liste des types de chambre ... -->
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date d'arrivée</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date de départ</label>
+                                            <input type="date" class="form-control">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Rechercher</button>
+                                    </form>
+                                    <!-- ... Affichage des résultats de la recherche ... -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- ./fotter -->
+    </div>
+</div>
+
+{% endblock %}
+
+<style>
+    /* Styles pour le formulaire d'ajout de client */
+    #add-client-form {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    #add-client-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    #add-client-form .form-control {
+        border-radius: 5px;
+    }
+
+    #add-client-form button {
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+
+    /* Styles pour le formulaire de réservation */
+    #make-reservation-form {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    #make-reservation-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    #make-reservation-form .form-control {
+        border-radius: 5px;
+    }
+
+    #make-reservation-form button {
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+</style>

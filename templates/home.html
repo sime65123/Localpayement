@@ -1,0 +1,1060 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block lien %}
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+    /* CSS pour une alerte personnalisée */
+.modal-custom {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.modal-content-custom {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-custom {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-custom:hover,
+.close-custom:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+    .nav-label {
+        font-weight: bold;
+    }
+    .modal-dialog {
+        max-width: 400px;
+        margin: 1.75rem auto;
+    }
+    .modal-body {
+        padding: 2rem;
+    }
+    .modal-footer {
+        padding: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+    .modal-content {
+        border-radius: 10px;
+    }
+    .pagination-buttons button:hover {
+  background-color: #4CAF50; /* Couleur verte principale */
+  color: white; /* Couleur du texte pour le contraste */
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="wrapper">
+
+
+
+    <nav class="navbar-default navbar-static-side" role="navigation" style="position:fixed;">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="img-circle" src="{% static 'assets/logo2.PNG' %}" width="100px" height="100px" /></span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">{{ user.email }}</strong>
+                                </span>
+                                <span class="font-bold">Agent</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">
+                        WWL
+                    </div>
+                </li>
+                <li class="">
+                    <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Acceuil</span></a>
+                </li>
+
+            
+
+              
+
+                <li class="nav-item ">
+                    <a class="nav-link" data-toggle="modal" data-target="#addcustomer">
+                        <i class="bx bx-user"></i>  <span class="nav-label">Add Customer</span>
+                    </a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" data-toggle="modal" data-target="#addsubscription" >
+                        <i class='bx bxs-doughnut-chart' ></i>  <span class="nav-label">Add subscription</span>
+                    </a>
+                </li>
+
+                <li class="nav-item ">
+                    <a class="nav-link" data-toggle="collapse" href="{% url 'analytics' %}" aria-expanded="false" aria-controls="subscriptionDropdown">
+                        <i class='bx bxs-doughnut-chart' ></i>  <span class="nav-label">Analytics</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'deconnexion' %}"><span class="nav-label"><i class="fa fa-sign-out"></i> Déconnexion</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+    <!-- HTML pour une alerte personnalisée -->
+    <div id="monAlerteClient" class="modal-custom alert" style="display:none;">
+      <div class="modal-content-custom">
+        <span class="close-custom">×</span>
+        <p>Client Ajouté avec Succes !.</p>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="listClientModal" tabindex="-1" role="dialog" aria-labelledby="uniqueReservationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="listClientModalLabel">Liste des Clients</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Nom</th>
+                          <th>Numero de téléphone</th>
+                          <th>Agence</th>
+                      </tr>
+                  </thead>
+                  <tbody id="listclient">
+                      <!-- Exemple de données statiques -->
+                     
+                      <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                  </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="listTicketModal" tabindex="-1" role="dialog" aria-labelledby="uniqueReservationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="listTicketModalLabel">Liste des Clients</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Numero</th>
+                          <th>Client</th>
+                          <th>date</th>
+                          <th>Statut</th>
+                      </tr>
+                  </thead>
+                  <tbody id="listticket">
+                      <!-- Exemple de données statiques -->
+                     
+                      <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                  </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Assurez-vous que votre bouton a l'ID "bouton_facture" -->
+<!-- <button id="bouton_facture" type="button" class="btn btn-primary" data-toggle="modal" data-target="#invoiceModal">
+  Afficher la facture
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="invoiceModalLabel">Facture</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <!-- Affichez le contenu de la facture ici -->
+              <embed id="factureEmbed" width="100%" height="600px" type="application/pdf">
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="invoiceModal2" tabindex="-1" role="dialog" aria-labelledby="invoiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="invoiceModalLabel">Détails du ticket</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <!-- Contenu dynamique du modal -->
+              <p>Numéro de ticket : <span id="ticketNumero"></span></p>
+              <p>Nom du client : <span id="clientNom"></span></p>
+              <!-- ... autres informations ... -->
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="addcustomer" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white ">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutClientForm" method="POST" action="">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" id="tel"  placeholder="Téléphone" name="numero_telephone" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+             
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                </div>
+                <select name="agence" class="form-control" id >
+                  {% for agence in agences %}
+                    <option value={{agence.id}}>{{agence.adresse_agence}}</option>
+
+                  {% endfor %}
+
+                </select>
+              </div>
+            </div>
+             
+            </div>
+          </div>
+          <!-- D'autres champs peuvent être ajoutés ici -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close1">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="addsubscription" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i>Valider une Souscription</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+              <span aria-hidden="true" class="text-white ">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Formulaire d'ajout de client -->
+            <form id="addsubscriptionForm" method="POST" action="">
+                {% csrf_token %}
+              <!-- Champs du formulaire avec des icônes -->
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i>client</span>
+                  </div>
+                  <div>
+                  <select id="clienti1" class="form-control" name="client">
+                    {% for client in clients %}
+                    <option value={{client.id}}>{{client.nom}}</option>
+                    {% endfor %}
+
+                  </select></div>
+                  <div>
+                 <input type="hidden" name="vendeur" id="vendeuri1" value= {{user.id}} > 
+             
+                </div>
+                
+                <div class="form-group">
+
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i>Type de lavage</span>
+                  </div>
+                  <select  class="form-control" name="type_lavage" id="type1">
+                    {% for type_lavage in types_lavage %}
+                    <option value={{type_lavage.id}}>{{type_lavage.nom}}</option>
+                    {% endfor %}
+
+                  </select></div>
+                </div>
+              </div>
+           
+            
+              </div>
+              <!-- D'autres champs peuvent être ajoutés ici -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close1">Fermer</button>
+                <button type="submit" class="btn btn-primary" id="buttonSubcriptionVal1">Souscrire</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <!-- Modal -->
+    <div class="modal fade" id="addsubscription2" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i>Valider une Souscription</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+              <span aria-hidden="true" class="text-white ">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Formulaire d'ajout de client -->
+            <form id="addsubscriptionForm" method="POST" action="">
+                {% csrf_token %}
+              <!-- Champs du formulaire avec des icônes -->
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i>client</span>
+                  </div>
+                  <div>
+                  {% comment %} <select id="client" class="form-control"> {% endcomment %}
+                    <input type="text" id="client_souscription" name="client" disabled> 
+                    <input type="hidden" id="client_souscription2">
+                    {% comment %} {% for client in clients %}
+                    <option>{{client.nom}}</option>
+                    {% endfor %} {% endcomment %}
+
+                  </select></div>
+                  <div>
+                 <input type="hidden" name="vendeur" id="vendeuri2" value= {{user.id}} > 
+            
+                </div>
+                
+                <div class="form-group">
+
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-user"></i>Type de lavage</span>
+                  </div>
+                  <input type="hidden" id="client">
+                  {% comment %} <select id="client" class="form-control" hidden></select> {% endcomment %}
+                  <select id="type2" class="form-control">
+                    {% for type_lavage in types_lavage %}
+                    <option value={{type_lavage.id}}>{{type_lavage.nom}}</option>
+                    {% endfor %}
+
+                  </select></div>
+                </div>
+              </div>
+           
+            
+              </div>
+              <!-- D'autres champs peuvent être ajoutés ici -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close1">Fermer</button>
+                <button type="submit" class="btn btn-primary" id="buttonSubcriptionVal2" >Souscrire</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="page-wrapper" class="gray-bg" style="min-height: 1263px;" style="position:fixed;">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                            class="fa fa-bars"></i> </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">Bienvenue, {{ user.email }}</span>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'deconnexion' %}">
+                            <i class="fa fa-sign-out"></i> Déconnexion
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>DASHBOARD Enrollment</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="home.php">Acceuil</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">Enrollment</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInUp">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-primary pull-right">Souscription</span>
+                                    <h5>Souscription - Aperçu</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <!-- <label >echo</label> -->
+                                    <h1 class="no-margins" id="id_somme_souscription">40 000</h1>
+                                    <div class="stat-percent font-bold text-navy"> <i
+                                            class="fa fa-bolt"></i></div>
+                                    <small>Total souscription du jour</small>
+                                    <div class="progress progress-small">
+                                        <div style="width: 100%" aria-valuemax="20" aria-valuemin="0"
+                                            aria-valuenow="98" role="progressbar" class="progress-bar progress-bar-primary">
+                                        </div>
+                                    </div>
+                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#listTicketModal">
+        Liste des souscription
+    </button>
+                                </div>
+                            </div>
+                        </div>
+      
+                        <div class="col-lg-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-warning pull-right">Clients</span>
+                                    <h5>Liste des clients</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins" id="somme_client_du_jour">12 000</h1>
+                                    <div class="stat-percent font-bold text-warning"> <i
+                                            class="fa fa-users"></i></div>
+                                    <small>Nouveaux Client du jour</small>
+                                    <div class="progress progress-small">
+                                        <div style="width: 100%" aria-valuemax="100" aria-valuemin="0"
+                                            aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-warning">
+                                        </div>
+                                    </div>
+                                    
+                                    <a href="#" class="btn btn-sm btn-warning btn-block" data-toggle="modal" data-target="#listClientModal">Prévisualition  les clients</a>
+                                </div>
+                            </div>
+                        </div>
+                     
+                    </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                            <div class="ibox float-e-margins">
+                             
+                                <div class="ibox-content">
+                                    <form method="POST" >
+                                        {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="searchClientInput" placeholder="Entrer le nom du Clinet...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button" id="searchClientButton"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div></form>
+
+
+
+<div id="clientSearchResults" class="search-results">
+    <table class="table table-striped clientTableBody" >
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>adresse</th>
+                <th>Tél</th>
+                <th>Matricul</th>
+                <th>Date</th>
+                <th>Action</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="clientTableBody">
+
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination-buttons">
+    {% if clients.has_previous %}
+    <a href="?page={{ clients.previous_page_number }}" class="btn btn-default" id="clientPreviousPage">Précédent</a>
+    {% endif %}
+    {% if clients.has_next %}
+    <a href="?page={{ clients.next_page_number }}" class="btn btn-default" id="clientNextPage">Suivant</a>
+    {% endif %}
+</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... (Footer code) ... -->
+    </div>
+</div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ./fotter -->
+    </div>
+</div>{% endblock %}
+
+
+{% block script %}
+
+<script>
+var modal1 = document.getElementById("monAlerteClient");
+
+var span = document.getElementsByClassName("close-custom")[0];
+
+// Pour afficher l'alerte
+function showAlert1() {
+  modal1.style.display = "block";
+}
+    
+    $(document).ready(function() {
+        // ... your existing code ...
+
+        // Handle the close button in your custom modal
+        $('.close-custom').click(function() {
+            $(this).parent().parent().hide(); // Hide the parent modal
+        });
+
+        // ... your existing code ...
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('ajoutClientForm').addEventListener('submit', function(e) {
+          e.preventDefault();  // Empêche le rechargement de la page
+          var donnees = new FormData(this);  // Crée un objet FormData avec les données du formulaire
+  
+          fetch("{% url 'ajout_client' %}", {  // Remplacez par l'URL de votre vue Django
+              method: 'POST',
+              body: donnees,
+              headers: {
+                  'X-Requested-With': 'XMLHttpRequest',  // Important pour que Django reconnaisse la requête comme AJAX
+                  'X-CSRFToken': getCookie('csrftoken')  // Obtient le jeton CSRF
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Affiche le message toast avec la réponse du serveur
+              
+  
+              if(data.status === 'ok') {
+                  // Client ajouté avec succès
+                  console.log('Client ajouté:');
+                   $('#addcustomer').modal('hide');
+                   // alert("client ajouté avec succes ");
+                   showAlert1();
+                    // afficherAlerte('Le client a été ajouté avec succès.', 'success');
+  
+              } else {
+                  // Gérer les erreurs
+                  alert("Erreur de l'insertion !");
+                  console.error('Erreur:', data.errors);
+              }
+          })
+          .catch((error) => {
+               alert("Erreur de l'insrtion !");
+              console.error('erreur ajax :',error);
+          });
+      });
+  });
+  
+  // Fonction pour obtenir le cookie CSRF
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  
+  
+
+  function updateClientList() {
+    fetch('{% url "get_client" %}')  // Remplacez par l'URL de votre vue get_chambres
+        .then(response => response.json())
+        .then(clients => {
+          const selectElement2 = document.getElementById('listclient');
+      selectElement2.innerHTML='';
+            const selectElement = document.getElementById('client');
+            selectElement.innerHTML = '';  // Efface les options actuelles
+            clients.forEach(client => {
+                selectElement.innerHTML += `<option value="${client.id}">${client.nom}</option>`;
+                selectElement2.innerHTML+=` <tr>
+                  <td>${client.nom}</td>
+                  <td>${client.numero}</td>
+                  <td>${client.agence}</td>
+              
+                  
+              </tr>`;
+            });
+        })
+        .catch(error => console.error('Erreur lors de la récupération des clients :', error));
+}
+
+// Appel initial et mise à jour périodique
+updateClientList();
+setInterval(updateClientList, 10000);
+
+
+
+
+function Listsouscription() {
+  fetch('{% url "get_ticket" %}')  // Remplacez par l'URL de votre vue get_chambres
+      .then(response => response.json())
+      .then(tickets => {
+        const selectElement2 = document.getElementById('listticket');
+    selectElement2.innerHTML='';
+      // Efface les options actuelles
+          tickets.forEach(ticket => {
+
+              selectElement2.innerHTML+=` <tr>
+                <td>${ticket.numero}</td>
+                <td>${ticket.client}</td>
+                <td>${ticket.date}</td>
+                <td>${formatStatutTicket(ticket.est_utilise)}</td>
+            
+                
+            </tr>`;
+          });
+      })
+      .catch(error => console.error('Erreur lors de la récupération des souscriptions :', error));
+}
+
+// Appel initial et mise à jour périodique
+Listsouscription();
+setInterval(Listsouscription, 10000);
+
+
+function somme_client_du_jour() {
+  $.ajax({
+      url: '{% url "somme_client_du_jour" %}',  // Remplacez par l'URL de votre vue
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+          $('#somme_client_du_jour').text(data.somme);  // Remplacez par l'ID de l'élément HTML à mettre à jour
+      },
+      error: function(error) {
+          console.log(error);
+      }
+  });
+}
+
+// Appeler updateInformation toutes les 600000 millisecondes (10 minutes)
+somme_client_du_jour()
+setInterval(somme_client_du_jour, 600000);
+
+
+function somme_souscription_du_jour() {
+  $.ajax({
+      url: '{% url "somme_souscription_du_jour" %}',  // Remplacez par l'URL de votre vue
+      type: 'GET',
+      dataType: 'json',
+      success: function(data) {
+          $('#id_somme_souscription').text(data.somme);  // Remplacez par l'ID de l'élément HTML à mettre à jour
+      },
+      error: function(error) {
+          console.log(error);
+      }
+  });
+}
+
+// Appeler updateInformation toutes les 600000 millisecondes (10 minutes)
+somme_souscription_du_jour()
+setInterval(somme_souscription_du_jour, 600000);
+
+
+function formatStatutTicket(statut) {
+  return statut ? '✅' : '❌';  // Si statut est true, affichez une coche, sinon une croix
+}
+
+
+$("#searchClientButton").click(function() {
+  var searchTerm = $("#searchClientInput").val();
+  // Effectuer une requête AJAX pour rechercher les clients
+  $.ajax({
+      url: '{% url "rechercher_clients" %}', // Remplacez par l'URL de votre vue
+      type: 'POST',
+      data: {
+          'searchTerm': searchTerm,
+      },
+      success: function(data) {
+          // Afficher les résultats de la recherche dans #clientSearchResults
+          $("#clientTableBody").html(''); // Effacer les données précédentes
+          for (var i = 0; i < data.clients.length; i++) {
+              var client = data.clients[i];
+             var row = '<tr>' +
+'<td>' + client.nom + '</td>' +
+'<td>' + client.adresse + '</td>' +
+'<td>' + client.tel + '</td>' +
+'<td>' + client.matricule + '</td>' +
+'<td>' + client.date + '</td>' +
+
+
+'<td><button type="button" class="btn"  data-toggle="modal" data-target="#addsubscription2" data-id="'+ client.id+'" data-nom="' + client.nom + '" style="color:white" id="btn_add_reservation2"><i class="fa fa-clock-o text-success">Souscrire</i></button></td>' +
+'</tr>';
+
+              $("#clientTableBody").append(row);
+          }}
+        });
+      });
+
+
+
+
+      
+// Assurez-vous que cette partie du code est exécutée après que le DOM soit complètement chargé
+$(document).ready(function() {
+
+  $(document).on('click', '#btn_add_reservation2', function() {
+    console.log("ok..................");
+    var targetModal = $(this).data('target');
+    var nomClient = $(this).data('nom');
+    var idClient = $(this).data('id');
+    console.log(idClient);
+    console.log(targetModal);
+    $(targetModal).find('#client_souscription').val(nomClient);
+    $(targetModal).find('#client_souscription2').val(idClient);
+
+});
+
+
+})
+
+
+
+
+
+
+$(document).ready(function() {
+  $("#buttonSubcriptionVal1").click(function(e) {
+    e.preventDefault();
+      var client = $("#clienti1").val();
+      var vendeur = $("#vendeuri1").val();
+      var type_lavage = $("#type1").val();
+
+      $.ajax({
+          url: "{% url 'create_ticket' %}",  // Remplacez par le vrai chemin vers votre vue Django
+          type: "POST",
+          data: {
+              'client': client,
+              'vendeur': vendeur,
+              'type_lavage': type_lavage,
+          },
+          success: function(data) {
+              // Mettez à jour les valeurs des éléments du modal
+              $("#ticketNumero").text(data.ticket_numero);
+              $("#clientNom").text(data.nom);
+              $("#typeLavage").text(data.type_lavage);
+              $("#vendeurEmail").text(data.vendeur);
+              $("#estUtilise").text(data.est_utilise);
+              $("#dateTicket").text(data.date);
+              $('#addsubscription').modal('hide');
+
+              // Ouvrez le modal après que les valeurs ont été mises à jour
+              $("#invoiceModal2").modal("show"); 
+          },
+          error: function() {
+              alert("Erreur lors de la récupération du contenu de la facture.");
+          }
+      });
+  });
+
+ $("#buttonSubcriptionVal2").click(function(e) {
+    e.preventDefault();
+      var client = $("#client_souscription2").val();
+      var vendeur = $("#vendeuri2").val();
+      var type_lavage = $("#type2").val();
+
+      $.ajax({
+          url: "{% url 'create_ticket' %}",  // Remplacez par le vrai chemin vers votre vue Django
+          type: "POST",
+          data: {
+              'client': client,
+              'vendeur': vendeur,
+              'type_lavage': type_lavage,
+          },
+          success: function(data) {
+              // Mettez à jour les valeurs des éléments du modal
+              $("#ticketNumero").text(data.ticket_numero);
+              $("#clientNom").text(data.nom);
+              $("#typeLavage").text(data.type_lavage);
+              $("#vendeurEmail").text(data.vendeur);
+              $("#estUtilise").text(data.est_utilise);
+              $("#dateTicket").text(data.date);
+              $('#addsubscription').modal('hide');
+
+              // Ouvrez le modal après que les valeurs ont été mises à jour
+              $("#invoiceModal2").modal("show"); 
+          },
+          error: function() {
+              alert("Erreur lors de la récupération du contenu de la facture.");
+          }
+      });
+  });  
+
+
+
+
+  
+
+  // Attachez un gestionnaire d'événement à l'événement 'shown.bs.modal'
+  $("#invoiceModal2").on("shown.bs.modal", function() {
+      // Vous pouvez ajouter d'autres actions ici si nécessaire
+      console.log("Le modal est maintenant affiché !");
+  });
+});
+
+
+
+
+ 
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> 
+
+      
+
+
+
+{% endblock %}

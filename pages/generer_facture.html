@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Générer une Facture</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-info">Générer</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <!-- Ici, vous pouvez intégrer l'aperçu PDF -->
+            <iframe src="{% url 'generer_facture' %}" width="100%" height="600px">
+                Votre navigateur ne supporte pas les iframes.
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}

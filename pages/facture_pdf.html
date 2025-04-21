@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <!-- Inclure ici les liens vers les fichiers CSS (par exemple, Bootstrap) si nécessaire -->
+</head>
+<body>
+    <h1>Facture</h1>
+    <p>Numéro de ticket : {{ ticket.numero }}</p>
+    <p>Date : {{ ticket.date }}</p>
+    <p>Client : {{ ticket.client.nom }}</p>
+    <p>Type de lavage : {{ ticket.type_lavage.nom }}</p>
+    <p>Vendeur : {{ ticket.vendeur.email }}</p>
+    <p>Utilisé : {% if ticket.est_utilise %}Oui{% else %}Non{% endif %}</p>
+    <!-- Ajoutez d'autres détails de la facture ici si nécessaire -->
+</body>
+</html>

@@ -1,0 +1,542 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'style_dashboard.css' %}" />
+
+
+
+
+{% endblock %}
+{% block title %}
+Local payement
+{% endblock %}
+
+{% block content %}
+<!-- <div class="container mt-5">
+    <h1>Bienvenue sur le Système de Gestion</h1>
+    <div class="list-group">
+        <a href="{% url 'connexion' %}" class="list-group-item list-group-item-action">Connexion</a>
+        <a href="{% url 'ajouter_client' %}" class="list-group-item list-group-item-action">Ajouter un Client</a>
+        <a href="{% url 'generer_facture' %}" class="list-group-item list-group-item-action">Générer une Facture</a>
+    </div>
+</div> -->
+
+
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <i class='bx bxs-smile'></i>
+            <span class="text">Enrollment</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#">
+                    <i class='bx bxs-dashboard' ></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+           
+            <li>
+
+                <a href="#" id="add_customer" data-toggle="modal" data-target="#ajoutClientModal">
+                    <i class="bx bx-user"></i> 
+                    <span class="text" >Add Customer</span>
+                </a>
+            </li>
+             <li>
+                            
+            <li>
+                <a href="#">
+                    <i class='bx bxs-doughnut-chart' ></i>
+                    <span class="text">Analytics</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="bx bx-box"></i>
+
+
+                    <span class="text">Add subscription</span>
+                </a>
+            </li>
+            
+        </ul>
+        <ul class="side-menu">
+        
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bxs-log-out-circle' ></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+
+
+
+<!-- <div id="addCustomerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCustomerModalLabel">Ajouter un client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addCustomerForm" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="nom"><i class="bx bx-user"></i> Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez le nom du client" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adresse"><i class="bx bx-map"></i> Adresse</label>
+                        <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Entrez l'adresse du client" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero_telephone"><i class="bx bx-phone"></i> Numéro de téléphone</label>
+                        <input type="tel" class="form-control" id="numero_telephone" name="numero_telephone" placeholder="Entrez le numéro de téléphone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agence"><i class="bx bx-building"></i> Agence</label>
+                        <input type="text" class="form-control" id="agence" name="agence" placeholder="Entrez l'agence du client" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter le client</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="ajoutClientModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutClientForm" method="POST">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" id="tel" name="tel" placeholder="Téléphone" name="telephone" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              </div>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+            </div>
+          </div>
+          <!-- D'autres champs peuvent être ajoutés ici -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="addCustomerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCustomerModalLabel">Ajouter un client</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addCustomerForm" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="nom"><i class="bx bx-user"></i> Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Entrez le nom du client" required>
+                    </div>
+                    <!-- Autres champs de saisie ici -->
+                    <button type="submit" class="btn btn-primary">Ajouter le client</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#addCustomerModal").modal();
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu' ></i>
+            <!-- <a href="#" class="nav-link">Categories</a> -->
+            
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+        <!--    <a href="#" class="notification">
+                <i class='bx bxs-bell' ></i>
+                <span class="num">8</span>
+            </a> -->
+            <!-- <a href="#" class="profile">
+                <img src="img/people.png">
+            </a> -->
+        </nav>
+        <!-- NAVBAR -->
+
+        <!-- MAIN -->
+        <main>
+            <div class="head-title">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                        <li><i class='bx bx-chevron-right' ></i></li>
+                        <li>
+                            <a class="active" href="#">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            <!--    <a href="#" class="btn-download">
+                    <i class='bx bxs-cloud-download' ></i>
+                    <span class="text">Download PDF</span>
+                </a> -->
+            </div>
+
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-calendar-check' ></i>
+                    <span class="text">
+                        <h3>1020</h3>
+                        <p>Number of washes of the day</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-group' ></i>
+                    <span class="text">
+                        <h3>2834</h3>
+                        <p>Number of customers of the day</p>
+                    </span>
+                </li>
+                <li>
+                    <i class='bx bxs-dollar-circle' ></i>
+                    <span class="text">
+                        <h3>$2543</h3>
+                        <p>Total Sales of the days</p>
+                    </span>
+                </li>
+            </ul>
+
+
+            <div class="table-data">
+                <div class="order">
+                    <div class="head">
+                        <h3>Recent customers</h3>
+                        <i class='bx bx-search' ></i>
+                        <i class='bx bx-filter' ></i>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Date enrolment</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="img/people.png">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>01-10-2021</td>
+                                <td><span class="status completed">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/people.png">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>01-10-2021</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/people.png">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>01-10-2021</td>
+                                <td><span class="status process">Process</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/people.png">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>01-10-2021</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="img/people.png">
+                                    <p>John Doe</p>
+                                </td>
+                                <td>01-10-2021</td>
+                                <td><span class="status completed">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+
+
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="ajoucustomer" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true" id="modal_add_customer">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutcustomerform" method="POST">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="nom client"  required>
+            </div>
+          </div>
+          <div class="form-group">
+          
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" id="adresse" name="adresse" placeholder="adresse client" required>
+            </div>
+          </div>
+          <div class="form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div >
+            <select class="form-control" id="agence" name="agence" required>
+                 agence
+                   {% for agence in agences  %}
+                
+                    <option value="{{agence.id}}">{{ agence.nom}}</option>
+               
+            {% endfor %} -->
+              </select>
+          </div>
+    
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="todo">
+                    <div class="head">
+                        <h3>Recents Wash</h3>
+                        <i class='bx bx-plus' ></i>
+                        <i class='bx bx-filter' ></i>
+                    </div>
+                    <ul class="todo-list">
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded' ></i>
+                        </li>
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded' ></i>
+                        </li>
+                        <li class="not-completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded' ></i>
+                        </li>
+                        <li class="completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded' ></i>
+                        </li>
+                        <li class="not-completed">
+                            <p>Todo List</p>
+                            <i class='bx bx-dots-vertical-rounded' ></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+      <script>
+        // Dans votre fichier JavaScript
+$(document).ready(function() {
+    // Initialiser le modal
+    $("#addCustomerModal").modal();
+
+    // Afficher le modal lors du clic sur le lien "Add Customer"
+    $("#add_customer").click(function() {
+        console.log("je suis cliqué");
+        $("#addCustomerModal").modal("show"); // Utilisez "show" pour afficher le modal
+    });
+
+    // Soumettre le formulaire via AJAX
+    $("#addCustomerForm").submit(function(e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "{% url 'add_customer_view' %}",
+            data: $(this).serialize(),
+            success: function(response) {
+                // Gérer la réponse (par exemple, afficher un message de succès)
+                console.log(response);
+                $("#addCustomerModal").modal("hide"); // Utilisez "hide" pour masquer le modal
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
+
+    
+
+    {% endblock %}
+    <!-- CONTENT -->
+      {% block script %}
+    
+
+
+
+      </script>
+      <script src="{% static 'script_dashboard.js' %}"></script>
+        <!-- Contenu spécifique à chaque page sera inséré ici -->
+        {% endblock %}
+
+ 

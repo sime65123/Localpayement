@@ -1,0 +1,1635 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block lien %}
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+<style>
+    /* CSS pour une alerte personnalisée */
+.modal-custom {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+}
+
+.modal-content-custom {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close-custom {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-custom:hover,
+.close-custom:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+    .nav-label {
+        font-weight: bold;
+    }
+    .modal-dialog {
+        max-width: 400px;
+        margin: 1.75rem auto;
+    }
+    .modal-body {
+        padding: 2rem;
+    }
+    .modal-footer {
+        padding: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+    .modal-content {
+        border-radius: 10px;
+    }
+    .pagination-buttons button:hover {
+  background-color: #4CAF50; /* Couleur verte principale */
+  color: white; /* Couleur du texte pour le contraste */
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div id="wrapper">
+
+
+
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="uniqueReservationModal" tabindex="-1" role="dialog" aria-labelledby="uniqueReservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uniqueReservationModalLabel">Liste des Réservations</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date début</th>
+                            <th>Client</th>
+                            <th>Numero Chambre</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uniqueReservations">
+                        <!-- Exemple de données statiques -->
+                       
+                        <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+<!-- Modal -->
+    <div class="modal fade" id="ReservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true" >
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Liste des Réservations</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                               
+                                <th>ID</th>
+                                <th>Date début</th>
+                                <th>Client</th>
+                                <th>Numero Chambre</th>
+                                <th>Facture_R</th>
+                                <!-- <th>Statut</th> -->
+                            </tr>
+                        </thead>
+                        <tbody id="reservations">
+                           
+                          
+
+                            <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+       
+
+<!-- Modal -->
+<div class="modal fade" id="ChambreModal" tabindex="-1" role="dialog" aria-labelledby="ChambreModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ChambreModalLabel">Liste des Chambres</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table" >
+                    <thead>
+                        <tr>
+                           
+                            <th>Numero</th>
+                            <th>Capacite</th>
+                            <th>Prix</th>
+                            <th>Statut</th>
+                          
+                        </tr>
+                    </thead>
+                    <tbody id="liste_des_chambres">
+                       
+                      
+
+                        <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="ClientNOkModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel">Liste des Client Non Ok</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table" >
+                    <thead>
+                        <tr>
+                           
+                            <th>Numero Client</th>
+                            <th>Nom</th>
+                            <th>Dette Client</th>
+                            <th>Numero Chambre</th>
+                            <!-- <th>Statut</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="clientNOk">
+                       
+                      
+
+                        <!-- Ajoutez plus de lignes ici avec vos données statiques -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <nav class="navbar-default navbar-static-side" role="navigation" style="position:fixed;">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="img-circle" src="{% static 'assets/img/logo2.PNG' %}" width="100px" height="100px" /></span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear">
+                                <span class="block m-t-xs">
+                                    <strong class="font-bold">{{ user.username }}</strong>
+                                </span>
+                                <span class="font-bold">Receptionniste</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">
+                        EHM
+                    </div>
+                </li>
+                <li class="">
+                    <a href="#"><i class="fa fa-home"></i> <span class="nav-label">Acceuil</span></a>
+                </li>
+
+            
+
+                <li class="nav-item active">
+                    <a class="nav-link" data-toggle="collapse" href="#reservationDropdown" aria-expanded="false" aria-controls="reservationDropdown">
+                        <i class="fas fa-hotel"></i> <span class="nav-label">D_Reservation</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="reservationDropdown">
+                        <div style="padding-left: 40px;padding-top: 10px;">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#ajoutClientModal">
+                                <ion-icon name="arrow-forward-circle" style="color: white;"></ion-icon> <span style="color:white;">Ajout Client</span>
+                            </a>
+                        </li>
+                    </div>
+                    <div style="padding-left: 40px;padding-top: 10px;">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#ajoutReservationModal">
+                                <ion-icon name="calendar-number-sharp" style="color: white;"></ion-icon></i> <span style="color:white;">Ajout Réservation</span>
+                            </a>
+                        </li>
+                    </div>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{% url 'deconnexion' %}"><span class="nav-label"><i class="fa fa-sign-out"></i> Déconnexion</span></a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <!-- HTML pour une alerte personnalisée -->
+<div id="monAlerteClient" class="modal-custom alert" style="display:none;">
+  <div class="modal-content-custom">
+    <span class="close-custom">×</span>
+    <p>Client Ajouté avec Succes !.</p>
+  </div>
+</div>
+
+
+<div id="monAlerteReservation" class="modal-custom alert" style="display:none;">
+  <div class="modal-content-custom">
+    <span class="close-custom">×</span>
+    <p>Reservation Ajouté avec Succes !.</p>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="ajoutClientModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de Client</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutClientForm" method="POST">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="text" class="form-control" id="tel" name="tel" placeholder="Téléphone" name="telephone" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              </div>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+            </div>
+          </div>
+          <!-- D'autres champs peuvent être ajoutés ici -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="ajoutReservationModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de Reservation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutReservationForm" method="POST">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="date" class="form-control" id="nom" name="date_debut" placeholder="date_reservation"  required>
+            </div>
+          </div>
+          <div class="form-group">
+          
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="number" class="form-control" id="tel" name="nombre_nuits" placeholder="Nombre de Nuits" required>
+            </div>
+          </div>
+          <div class="form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div id="blockChambreLibre">
+            <select class="form-control" id="chambre" name="chambre" required>
+              <!--   chambre
+                   {% for chambre in chambres %}
+                  {% if not chambre.statut %} 
+                    <option value="{{chambre.id}}">{{ chambre.numero_chambre}}</option>{% endif %}
+               
+            {% endfor %} -->
+              </select>
+          </div>
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+          <div class="form-group">
+            <select class="form-control" id="client" name="client" required>
+                client
+                  {% for client in all_clients %}
+            <option value="{{client.id}}">{{ client.nom }}</option>
+        {% endfor %}
+                <!-- Les options seront générées dynamiquement en fonction des chambres disponibles -->
+              </select>
+          </div>
+          <!-- D'autres champs peuvent être ajoutés ici -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- Modal -->
+<div class="modal fade" id="ajoutReservationModal2" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="modalLabel"><i class="fas fa-user-plus"></i> Ajout de Reservation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <span aria-hidden="true" class="text-white">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulaire d'ajout de client -->
+        <form id="ajoutReservationForm2" method="POST">
+            {% csrf_token %}
+          <!-- Champs du formulaire avec des icônes -->
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+              </div>
+              <input type="date" class="form-control" id="nom2" name="date_debut" placeholder="date_reservation"  required>
+            </div>
+          </div>
+          <div class="form-group">
+          
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+              <input type="number" class="form-control" id="tel2" name="nombre_nuits" placeholder="Nombre de Nuits" required>
+            </div>
+          </div>
+          <div class="form-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div id="blockChambreLibre">
+            <select class="form-control" id="chambre2" name="chambre" required>
+              <!--   chambre
+                   {% for chambre in chambres %}
+                  {% if not chambre.statut %} 
+                    <option value="{{chambre.id}}">{{ chambre.numero_chambre}}</option>{% endif %}
+               
+            {% endfor %} -->
+              </select>
+          </div>
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+              </div>
+          <div class="form-group">
+                <input type="text" class="form-control" id="client_reservation1"  placeholder="" disabled>
+                <input type="hidden" class="form-control" id="client_reservation2" name="client" placeholder="" >
+         <!--    <select class="form-control" id="client" name="client" required>
+                client
+                  {% for client in all_clients %}
+            <option value="{{client.id}}">{{ client.nom }}</option>
+        {% endfor %} -->
+                <!-- Les options seront générées dynamiquement en fonction des chambres disponibles -->
+              <!-- </select> -->
+          </div>
+          <!-- D'autres champs peuvent être ajoutés ici -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="page-wrapper" class="gray-bg" style="min-height: 1263px;" style="position:fixed;">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                            class="fa fa-bars"></i> </a>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">Bienvenue, {{ user.username }}</span>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'deconnexion' %}">
+                            <i class="fa fa-sign-out"></i> Déconnexion
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>DASHBOARD RECEPTIONNISTE</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="home.php">Acceuil</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">Réservation</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInUp">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-primary pull-right">Réservation</span>
+                                    <h5>Réservation - Aperçu</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <!-- <label >echo</label> -->
+                                    <h1 class="no-margins" id="id_somme_reservation">40 000</h1>
+                                    <div class="stat-percent font-bold text-navy"> <i
+                                            class="fa fa-bolt"></i></div>
+                                    <small>Total des nuitées enregistrées  du jour</small>
+                                    <div class="progress progress-small">
+                                        <div style="width: 100%" aria-valuemax="20" aria-valuemin="0"
+                                            aria-valuenow="98" role="progressbar" class="progress-bar progress-bar-primary">
+                                        </div>
+                                    </div>
+                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ReservationModal">
+        Liste des Réservations
+    </button>
+                                </div>
+                            </div>
+                        </div>
+      
+                        <div class="col-lg-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-warning pull-right">Clients</span>
+                                    <h5>Liste des clients</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins" id="somme_client_actif">12 000</h1>
+                                    <div class="stat-percent font-bold text-warning"> <i
+                                            class="fa fa-users"></i></div>
+                                    <small>Clients actifs</small>
+                                    <div class="progress progress-small">
+                                        <div style="width: 100%" aria-valuemax="100" aria-valuemin="0"
+                                            aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-warning">
+                                        </div>
+                                    </div>
+                                    
+                                    <a href="#" class="btn btn-sm btn-warning btn-block" data-toggle="modal" data-target="#ClientNOkModal">Prévisualition  les clients</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <span class="label label-danger pull-right">Chambres</span>
+                                    <h5>Statut des chambres</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins" id="nombre_chambre"></h1>
+                                    <div class="stat-percent font-bold text-danger"> <i
+                                            class="fa fa-bed"></i></div>
+                                    <small>Chambres disponibles</small>
+                                    <div class="progress progress-small">
+                                        <div style="width: 100%" aria-valuemax="100" aria-valuemin="0"
+                                            aria-valuenow="38" role="progressbar" class="progress-bar progress-bar-danger">
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#ChambreModal">
+                                        Etats des  chambres
+                                    </button>
+                                    {% comment %} <a href="#" class="btn btn-sm btn-danger btn-block" >Etats des  chambres</a> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                             
+                                <div class="ibox-content">
+                                    <form method="POST" >
+                                        {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="searchClientInput" placeholder="Rechercher un client...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button" id="searchClientButton"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div></form>
+
+
+                                    <!-- Dans votre template clients_list.html -->
+<!-- <div id="clientSearchResults" class="search-results"> -->
+    <!-- Affichez les clients ici -->
+    <!-- Utilisez la boucle for pour afficher les informations de chaque client -->
+<!-- </div> -->
+
+<!-- <div class="pagination-buttons">
+    <button class="btn btn-default" id="clientPreviousPage">Précédent</button>
+    <button class="btn btn-default" id="clientNextPage">Suivant</button>
+</div> 
+
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#monModal" data-id="123" data-nom="John Doe">
+    Ouvrir le modal
+</button>-->
+                               <!-- Dans votre template clients_list.html -->
+<div id="clientSearchResults" class="search-results">
+    <table class="table table-striped clientTableBody" >
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Tél</th>
+                <th>Code Client</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="clientTableBody">
+            {% comment %} {% for client in clients %}
+            <tr>
+                <td>{{ client.nom }}</td>
+                <td>{{ client.tel }}</td>
+                <td>{{ client.code_client }}</td>
+                <td><button type="button" class="btn " data-toggle="modal" data-target="#ajoutReservationModal2" data-id="123" data-nom={{client.nom}} style="color:white" id="btn_add_reservation"><i class="fa fa-clock-o text-success" > réserver</td></button>'</td>
+            </tr>
+            {% endfor %} {% endcomment %}
+        </tbody>
+    </table>
+</div>
+
+<div class="pagination-buttons">
+    {% if clients.has_previous %}
+    <a href="?page={{ clients.previous_page_number }}" class="btn btn-default" id="clientPreviousPage">Précédent</a>
+    {% endif %}
+    {% if clients.has_next %}
+    <a href="?page={{ clients.next_page_number }}" class="btn btn-default" id="clientNextPage">Suivant</a>
+    {% endif %}
+</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="ibox float-e-margins">
+                              
+                                <div class="ibox-content">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="searchReservationInput" placeholder="Rechercher une réservation...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary" type="button" id="searchReservationButton"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="reservationSearchResults" class="search-results">
+                                       <div class="search-results">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+               
+                <th>Client</th>
+                <th>numero Chambre</th>
+                 <th>R_Dettes</th>
+                <th>Ristourne</th>
+            </tr>
+        </thead>
+        <form>
+            
+        
+        <tbody id="reservationTableBody">
+          
+        </tbody>
+        </form>
+    </table>
+</div>
+                                    </div>
+                                  <!--   <div class="pagination-buttons">
+                                        <button class="btn btn-default" id="reservationPreviousPage">Précédent</button>
+                                        <button class="btn btn-default" id="reservationNextPage">Suivant</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ... (Footer code) ... -->
+    </div>
+</div>
+
+<script>
+    // Initialisation de la pagination (vous devrez implémenter la logique de la pagination)
+    var clientCurrentPage = 1;
+    var reservationCurrentPage = 1;
+
+    // Gestionnaire d'événements pour le bouton de recherche de clients
+    $("#searchClientButton").click(function() {
+        var searchTerm = $("#searchClientInput").val();
+        // Effectuer une requête AJAX pour rechercher les clients
+        $.ajax({
+            url: '{% url "rechercher_clients" %}', // Remplacez par l'URL de votre vue
+            type: 'POST',
+            data: {
+                'searchTerm': searchTerm,
+                'page': clientCurrentPage
+            },
+            success: function(data) {
+                // Afficher les résultats de la recherche dans #clientSearchResults
+                $("#clientTableBody").html(''); // Effacer les données précédentes
+                for (var i = 0; i < data.clients.length; i++) {
+                    var client = data.clients[i];
+                   var row = '<tr>' +
+    '<td>' + client.nom + '</td>' +
+    '<td>' + client.tel + '</td>' +
+    
+    '<td>' + client.code_client + '</td>' +
+    
+    '<td><button type="button" class="btn"  data-toggle="modal" data-target="#ajoutReservationModal2" data-id="'+ client.id+'" data-nom="' + client.nom + '" style="color:white" id="btn_add_reservation2"><i class="fa fa-clock-o text-success"> réserver</i></button></td>' +
+    '</tr>';
+
+                    $("#clientTableBody").append(row);
+                }
+
+                // Mettre à jour clientCurrentPage
+                clientCurrentPage = data.current_page;
+
+                // Activer/désactiver les boutons de pagination
+                updatePaginationButtons('client');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la recherche des clients:', error);
+            }
+        });
+    });
+
+    // Gestionnaire d'événements pour les boutons de pagination des clients
+    $("#clientPreviousPage").click(function() {
+        clientCurrentPage--;
+        // Effectuer une requête AJAX pour récupérer la page précédente des clients
+        // ...
+        // Afficher les résultats de la recherche dans #clientSearchResults
+        // ...
+    });
+
+    $("#clientNextPage").click(function() {
+        clientCurrentPage++;
+        // Effectuer une requête AJAX pour récupérer la page suivante des clients
+        // ...
+        // Afficher les résultats de la recherche dans #clientSearchResults
+        // ...
+    });
+
+
+
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------
+
+    // Gestionnaire d'événements pour le bouton de recherche de réservations
+    // $("#searchReservationButton").click(function() {
+    //     var searchTerm = $("#searchReservationInput").val();
+    //     // Effectuer une requête AJAX pour rechercher les réservations
+    //     $.ajax({
+    //         url: '{% url "rechercher_reservations" %}', // Remplacez par l'URL de votre vue
+    //         type: 'POST',
+    //         data: {
+    //             'searchTerm': searchTerm,
+    //             'page': reservationCurrentPage
+    //         },
+    //         success: function(data) {
+    //             // Afficher les résultats de la recherche dans #reservationSearchResults
+    //             $("#reservationTableBody").html(''); // Effacer les données précédentes
+    //             for (var i = 0; i < data.reservations.length; i++) {
+    //                 var reservation = data.reservations[i];
+    //                 var row = '<tr>' +
+    //                     '<td>' + reservation.client.nom + '</td>' +
+    //                     '<td>' + reservation.chambre.nom + '</td>' +
+    //                     '<td>' + reservation.nombre_nuits + '</td>' +
+    //                     '<td><input type="number"></td>' +
+    //                     '<td ><button type="button" class="btn " data-toggle="modal" data-target="" data-id="123"  style="color:darkblue">Valider ✅</button></td>'+
+    //                     '</tr>';
+    //                 $("#reservationTableBody").append(row);
+    //             }
+
+    //             // Mettre à jour reservationCurrentPage
+    //             reservationCurrentPage = data.current_page;
+
+    //             // Activer/désactiver les boutons de pagination
+    //             updatePaginationButtons('reservation');
+    //         },
+    //         error: function(error) {
+    //             console.error('Erreur lors de la recherche des réservations:', error);
+    //         }
+    //     });
+    // });
+
+    // // Gestionnaire d'événements pour les boutons de pagination des réservations
+    // $("#reservationPreviousPage").click(function() {
+    //     reservationCurrentPage--;
+    //     // Effectuer une requête AJAX pour récupérer la page précédente des réservations
+    //     // ...
+    //     // Afficher les résultats de la recherche dans #reservationSearchResults
+    //     // ...
+    // });
+
+    // $("#reservationNextPage").click(function() {
+    //     reservationCurrentPage++;
+    //     // Effectuer une requête AJAX pour récupérer la page suivante des réservations
+    //     // ...
+    //     // Afficher les résultats de la recherche dans #reservationSearchResults
+    //     // ...
+    // });
+
+
+    //--------------------------------------------------------------------------------------------------------------------------------------------
+
+    // Fonction pour activer/désactiver les boutons de pagination
+    function updatePaginationButtons(type) {
+        var currentPage = type === 'client' ? clientCurrentPage : reservationCurrentPage;
+        var previousButton = type === 'client' ? '#clientPreviousPage' : '#reservationPreviousPage';
+        var nextButton = type === 'client' ? '#clientNextPage' : '#reservationNextPage';
+
+        if (currentPage === 1) {
+            $(previousButton).prop('disabled', true);
+        } else {
+            $(previousButton).prop('disabled', false);
+        }
+
+        if (currentPage === 1) {
+            $(nextButton).prop('disabled', true);
+        } else {
+            $(nextButton).prop('disabled', false);
+        }
+    }
+</script>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ./fotter -->
+    </div>
+</div>{% endblock %}
+{% block script %}
+
+<script>
+
+
+ // fetch(`{% url 'clients_list' %}?page=${pageNumber}`) 
+
+// function updateClientsList(pageNumber) {
+//     fetch(`{% url 'clients_list' %}?page=${pageNumber}`)  // Remplacez par l'URL correcte de votre vue clients_list
+//         .then(response => response.json())
+//         .then(data => {
+//             const clientsContainer = document.getElementById('clientSearchResults');
+//             clientsContainer.innerHTML = '';  // Efface le contenu actuel
+
+//             // Assurez-vous que data est un tableau (array)
+//             if (Array.isArray(data)) {
+//                 data.forEach(client => {
+//                     clientsContainer.innerHTML += `<p>${client.nom}</p>`;  // Exemple d'affichage
+//                 });
+//             } else {
+//                 console.error('Erreur : data n\'est pas un tableau.');
+//             }
+//         })
+//         .catch(error => console.error('Erreur lors de la récupération des clients :', error));
+// }
+
+// // Gestion des boutons "Suivant" et "Précédent"
+// const previousButton = document.getElementById('clientPreviousPage');
+// const nextButton = document.getElementById('clientNextPage');
+
+// previousButton.addEventListener('click', () => {
+//     const currentPage = parseInt(previousButton.getAttribute('data-page'));
+//     updateClientsList(currentPage - 1);
+// });
+
+// nextButton.addEventListener('click', () => {
+//     const currentPage = parseInt(nextButton.getAttribute('data-page'));
+//     updateClientsList(currentPage + 1);
+// });
+
+// // Appel initial pour afficher la première page
+// updateClientsList(1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // JavaScript pour afficher et fermer l'alerte personnalisée
+var modal1 = document.getElementById("monAlerteClient");
+var modal2 = document.getElementById("monAlerteReservation");
+var span = document.getElementsByClassName("close-custom")[0];
+
+// Pour afficher l'alerte
+function showAlert1() {
+  modal1.style.display = "block";
+}
+
+function showAlert2() {
+  modal2.style.display = "block";
+}
+
+// Pour fermer l'alerte
+span.onclick = function() {
+  modal1.style.display = "none";
+}
+
+span.onclick = function() {
+  modal2.style.display = "none";
+}
+
+// Ferme l'alerte si l'utilisateur clique en dehors
+window.onclick = function(event) {
+  if (event.target == modal1) {
+    modal1.style.display = "none";
+  }
+}
+
+window.onclick = function(event) {
+  if (event.target == modal2) {
+    modal2.style.display = "none";
+  }
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('ajoutClientForm').addEventListener('submit', function(e) {
+        e.preventDefault();  // Empêche le rechargement de la page
+        var donnees = new FormData(this);  // Crée un objet FormData avec les données du formulaire
+
+        fetch("{% url 'ajout_client' %}", {  // Remplacez par l'URL de votre vue Django
+            method: 'POST',
+            body: donnees,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',  // Important pour que Django reconnaisse la requête comme AJAX
+                'X-CSRFToken': getCookie('csrftoken')  // Obtient le jeton CSRF
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Affiche le message toast avec la réponse du serveur
+            afficherToast(data.message);
+
+            if(data.status === 'ok') {
+                // Client ajouté avec succès
+                console.log('Client ajouté:', data.client);
+                 $('#ajoutClientModal').modal('hide');
+                 // alert("client ajouté avec succes ");
+                 showAlert1();
+                  // afficherAlerte('Le client a été ajouté avec succès.', 'success');
+
+            } else {
+                // Gérer les erreurs
+                alert("Erreur de l'insrtion !");
+                console.error('Erreur:', data.errors);
+            }
+        })
+        .catch((error) => {
+             alert("Erreur de l'insrtion !");
+            console.error('erreur ajax :',error);
+        });
+    });
+     document.getElementById('ajoutReservationForm').addEventListener('submit', function(e) {
+        e.preventDefault();  // Empêche le rechargement de la page
+        var donnees = new FormData(this);  // Crée un objet FormData avec les données du formulaire
+
+        fetch("{% url 'ajout_reservation' %}", {  // Remplacez par l'URL de votre vue Django
+            method: 'POST',
+            body: donnees,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',  // Important pour que Django reconnaisse la requête comme AJAX
+                'X-CSRFToken': getCookie('csrftoken')  // Obtient le jeton CSRF
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Affiche le message toast avec la réponse du serveur
+          
+
+            if(data.status === 'ok') {
+                // Client ajouté avec succès
+                console.log('reservation ajouté:', data.reservation);
+                 $('#ajoutReservationModal').modal('hide');
+                 // alert("client ajouté avec succes ");
+                 showAlert2();
+                  // afficherAlerte('Le client a été ajouté avec succès.', 'success');
+
+            } else {
+                // Gérer les erreurs
+                alert("Erreur de l'insertion !");
+                console.error('Erreur:', data.errors);
+            }
+        })
+        .catch((error) => {
+             alert("Erreur de l'insertion !");
+            console.error('erreur ajax :',error);
+        });
+    });
+
+
+    document.getElementById('ajoutReservationForm2').addEventListener('submit', function(e) {
+        e.preventDefault();  // Empêche le rechargement de la page
+        var donnees = new FormData(this);  // Crée un objet FormData avec les données du formulaire
+
+        fetch("{% url 'ajout_reservation' %}", {  // Remplacez par l'URL de votre vue Django
+            method: 'POST',
+            body: donnees,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',  // Important pour que Django reconnaisse la requête comme AJAX
+                'X-CSRFToken': getCookie('csrftoken')  // Obtient le jeton CSRF
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Affiche le message toast avec la réponse du serveur
+          
+
+            if(data.status === 'ok') {
+                // Client ajouté avec succès
+                console.log('reservation ajouté:', data.reservation);
+                 $('#ajoutReservationModal2').modal('hide');
+                 // alert("client ajouté avec succes ");
+                 showAlert2();
+                  // afficherAlerte('Le client a été ajouté avec succès.', 'success');
+
+            } else {
+                // Gérer les erreurs
+                alert("Erreur de l'insertion !");
+                console.error('Erreur:', data.errors);
+            }
+        })
+        .catch((error) => {
+             alert("Erreur de l'insertion !");
+            console.error('erreur ajax :',error);
+        });
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+// Fonction pour obtenir le cookie CSRF
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+
+
+
+
+
+
+    // Fonction pour récupérer les chambres libres via AJAX et mettre à jour le select
+    function updateChambresList() {
+        fetch('{% url "get_chambres_libre" %}')  // Remplacez par l'URL de votre vue get_chambres
+            .then(response => response.json())
+            .then(chambres => {
+                const selectElement = document.getElementById('chambre');
+                selectElement.innerHTML = '';  // Efface les options actuelles
+                chambres.forEach(chambre => {
+                    selectElement.innerHTML += `<option value="${chambre.id}">${chambre.numero_chambre}</option>`;
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des chambres :', error));
+    }
+
+    // Appel initial et mise à jour périodique
+    updateChambresList();
+    setInterval(updateChambresList, 10000);  // Mettre à jour toutes les 10 secondes
+
+
+
+
+        function updateChambresList2() {
+        fetch('{% url "get_chambres_libre" %}')  // Remplacez par l'URL de votre vue get_chambres
+            .then(response => response.json())
+            .then(chambres => {
+                
+                const selectElement2 = document.getElementById('nombre_chambre');
+                const selectElement = document.getElementById('chambre2');
+                selectElement.innerHTML = ''; 
+                selectElement2.innerHTML=chambres.length // Efface les options actuelles
+                chambres.forEach(chambre => {
+                    selectElement.innerHTML += `<option value="${chambre.id}">${chambre.numero_chambre}</option>`;
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des chambres :', error));
+    }
+
+    // Appel initial et mise à jour périodique
+    updateChambresList2();
+    setInterval(updateChambresList2, 10000);  // Mettre à jour toutes les 10 secondes
+
+
+    function reservationsList(){
+        fetch('{% url "get_reservations" %}')
+        .then(response =>response.json())
+        .then(reservations =>{
+            const selectElement = document.getElementById('reservations');
+            selectElement.innerHTML='';
+            reservations.forEach(reservation=>{
+                selectElement.innerHTML+=` <tr>
+                                <td>${reservation.id}</td>
+                                <td>${reservation.date_debut}</td>
+                                <td>${reservation.client}</td>
+                                <td>${reservation.chambre}</td>
+                                <td>${reservation.dette} ${formatStatutSession(reservation.statut_session)}</td>
+                               
+                            </tr>`;
+            });
+        })
+        .catch(error => console.error('Erreur lors de la recuperations des reservations :',error));
+    }
+
+    reservationsList();
+    setInterval(reservationsList,1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    function chambresList(){
+        fetch('{% url "get_chambres" %}')
+        .then(response =>response.json())
+        .then(chambres =>{
+            const selectElement = document.getElementById('liste_des_chambres');
+            selectElement.innerHTML='';
+            chambres.forEach(chambre=>{
+                selectElement.innerHTML+=` <tr>
+                                <td>${chambre.numero_chambre}</td>
+                                <td>${chambre.capacite}</td>
+                                <td>${chambre.prix}</td>
+                            
+                                <td>${formatStatutSession2(chambre.statut)}</td>
+                            </tr>`;
+            });
+        })
+        .catch(error => console.error('Erreur lors de la recuperations des chambre :',error));
+    }
+
+    chambresList();
+    setInterval(chambresList,1000);
+
+
+
+
+
+
+ 
+
+
+
+    function updatesommereservation() {
+    $.ajax({
+        url: '{% url "somme_reservations_du_jour" %}',  // Remplacez par l'URL de votre vue
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            $('#id_somme_reservation').text(data.somme);  // Remplacez par l'ID de l'élément HTML à mettre à jour
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+// Appeler updateInformation toutes les 600000 millisecondes (10 minutes)
+updatesommereservation()
+setInterval(updatesommereservation, 600000);
+
+
+
+
+
+function somme_client_actif() {
+    $.ajax({
+        url: '{% url "somme_client_actif" %}',  // Remplacez par l'URL de votre vue
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            $('#somme_client_actif').text(data.somme);  // Remplacez par l'ID de l'élément HTML à mettre à jour
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+// Appeler updateInformation toutes les 600000 millisecondes (10 minutes)
+somme_client_actif()
+setInterval(somme_client_actif, 600000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function formatStatutSession(statut) {
+    return statut ? '✅' : '❌';  // Si statut est true, affichez une coche, sinon une croix
+}
+
+function formatStatutSession2(statut) {
+    return statut ? '❌' : '✅';  // Si statut est true, affichez une coche, sinon une croix
+}
+
+// Assurez-vous que le DOM est entièrement chargé
+// $(document).ready(function() {
+//     // Gestionnaire d'événements pour le bouton de réservation
+//     $('.btn[data-toggle="modal"]').click(function(event) {
+//         event.stopPropagation(); 
+//         // Récupérer les données du client à partir des attributs data-*
+//         var nomClient = $(this).data('nom');
+      
+//         // ... récupérez d'autres données si nécessaire
+
+//         // Remplir les champs du formulaire dans le modal avec les données récupérées
+//         $('#client_reservation').val(nomClient);
+//         // ... remplissez d'autres champs si nécessaire
+
+//         // Ouvrir le modal
+//         $('#ajoutReservationModal2').modal('show');
+//     });
+// });
+
+$(document).ready(function() {
+    // Gestionnaire d'événements pour les boutons qui ouvrent un modal
+    $('.btn[data-toggle="modal"]').click(function(event) {
+        event.stopPropagation(); 
+        console.log("okkkkkkkkkkkkkkkkkkkk");
+        // Récupérer l'identifiant du modal à partir de l'attribut data-target du bouton
+        var targetModal = $(this).data('target');
+        var nomClient = $(this).data('nom');
+        console.log(nomClient);
+        // Vérifier si le bouton a un attribut data-nom
+        if ($(this).data('nom')) {
+            var nomClient = $(this).data('nom');
+            console.log(nomClient);
+            // Remplir les champs du formulaire dans le modal avec les données récupérées
+            $(targetModal).find('#client_reservation').val(nomClient);
+        }
+
+        // Ouvrir le modal spécifié dans l'attribut data-target
+        $(targetModal).modal('show');
+    });
+});
+
+
+
+
+
+
+
+// Assurez-vous que cette partie du code est exécutée après que le DOM soit complètement chargé
+$(document).ready(function() {
+    $("#searchReservationButton").click(function() {
+        var searchTerm = $("#searchReservationInput").val();
+        $.ajax({
+            url: '{% url "rechercher_reservations" %}',
+            type: 'POST',
+            data: {
+                'searchTerm': searchTerm,
+                'page': reservationCurrentPage
+            },
+            success: function(data) {
+                $("#reservationTableBody").html('');
+                for (var i = 0; i < data.reservations.length; i++) {
+                    var reservation = data.reservations[i];
+                    var row = '<tr>' +
+                        '<td>' + reservation.client.nom + '</td>' +
+                        '<td>' + reservation.chambre.nom + '</td>' +
+                        '<td>' + reservation.dette_T + '</td>' +
+                        '<td><input type="text" class="form-control montant-input" placeholder="Montant" ></td>' +
+                        '<td><input type="hidden" class="form-control id2-input" placeholder="id" value='+reservation.id+' ></td>' +
+                        '<td><button type="button" class="btn btn-primary submit-versement-btn" data-reservation-id="' + reservation + '">Soumettre</button></td>' +
+                        '</tr>';
+                    $("#reservationTableBody").append(row);
+                }
+                reservationCurrentPage = data.current_page;
+                updatePaginationButtons('reservation');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la recherche des réservations:', error);
+            }
+        });
+    });
+
+
+    
+
+
+
+
+    $(document).on('click', '#btn_add_reservation2', function() {
+        console.log("ok..................");
+        var targetModal = $(this).data('target');
+        var nomClient = $(this).data('nom');
+        var idClient = $(this).data('id');
+        console.log(idClient);
+        console.log(targetModal);
+        $(targetModal).find('#client_reservation1').val(nomClient);
+        $(targetModal).find('#client_reservation2').val(idClient);
+
+    });
+
+   // Gestionnaire d'événements pour le bouton de soumission du versement
+$(document).on('click', '.submit-versement-btn', function() {
+    var row = $(this).closest('tr');
+    var user_id = '{{ user.id }}'; // Assurez-vous que les guillemets sont présents
+    var montant = row.find('.montant-input').val();
+    var id_reservation = row.find('.id2-input').val();
+
+    // Ajout de la boîte de dialogue de confirmation
+    var confirmation = confirm('Confirmez-vous la soumission de ce versement ?');
+    if (confirmation) {
+        // Si l'utilisateur confirme, exécutez la requête AJAX
+        $.ajax({
+            url: "{% url 'update_versement' %}",
+            type: 'POST',
+            data: {
+                'montant': montant,
+                'reservation_id': id_reservation,
+                'user_id': user_id
+            },
+            success: function(response) {
+                if(response.success) {
+                    alert(response.message);
+                    // Actualiser la page ou les données affichées si nécessaire
+                } else {
+                    alert("Erreur : " + response.message);
+                }
+            },
+            error: function(error) {
+                console.error('Erreur lors de la mise à jour du versement:', error);
+            }
+        });
+    } else {
+        // Si l'utilisateur annule, ne faites rien
+        console.log('Soumission annulée par l\'utilisateur.');
+    }
+});
+
+
+        
+});
+
+
+function get_client_nonçok(){
+    fetch('{% url "get_client_nonçok" %}')
+    .then(response =>response.json())
+    .then(chambres =>{
+        const selectElement = document.getElementById('clientNOk');
+        selectElement.innerHTML='';
+        chambres.forEach(client=>{
+            selectElement.innerHTML+=` <tr>
+                <td>${client.code_client}</td>
+                            <td>${client.nom}</td>
+                            <td>${client.dette}</td>
+                            <td>${client.numero_chambre}</td>
+                            
+                        </tr>`;
+        });
+    })
+    .catch(error => console.error('Erreur lors de la recuperations des clients non ok :',error));
+}
+
+get_client_nonçok();
+setInterval(get_client_nonçok,1000);
+
+
+
+
+
+</script>
+
+
+{% endblock %}
+

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Analyse des Lavages</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas id="lavageHeureChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="lavageMoisChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Récupérer les données de la vue
+    fetch('{% url 'analytics' %}')
+        .then(response => response.json())
+        .then(data => {
+            // Graphe des lavages par heure
+            new Chart(document.getElementById('lavageHeureChart'), {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: 'Nombre de Lavages',
+                        data: data.data_heure,
+                        borderColor: 'blue',
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'hour'
+                            }
+                        }],
+                        yAxes: [{
+                            beginAtZero: true
+                        }]
+                    }
+                }
+            });
+
+            // Graphe des lavages par mois
+            new Chart(document.getElementById('lavageMoisChart'), {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: 'Nombre de Lavages',
+                        data: data.data_mois,
+                        borderColor: 'blue',
+                        backgroundColor: 'blue',
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'category',
+                            labels: data.data_mois.map(d => d.x)
+                        }],
+                        yAxes: [{
+                            beginAtZero: true
+                        }]
+                    }
+                }
+            });
+        });
+</script>
+{% endblock %}
