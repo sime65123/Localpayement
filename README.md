@@ -37,7 +37,7 @@ Cette application web permet à une entreprise de lavage automobile de gérer se
 
 1. **Cloner le dépôt**
    ```
-   git clone [URL_DU_REPO]
+   git clone https://github.com/sime65123/Localpayement.git
    cd [NOM_DU_DOSSIER]
    ```
 
